@@ -123,6 +123,7 @@
 <body>
 
 <div class="quiz-card">
+    <!-- 題目區域 -->
     <div id="quiz-panel">
         <div class="progress-wrapper">
             <div class="progress-meta">
@@ -136,6 +137,7 @@
         <div class="options-list" id="opt-container"></div>
     </div>
 
+    <!-- 結果區域 -->
     <div id="result-panel" class="result-container">
         <div class="result-tag" id="res-tag">深度分析報告完成</div>
         <h2 class="result-type" id="res-type">人格類型結算中...</h2>
@@ -146,7 +148,6 @@
 </div>
 
 <script>
-    // 你的專屬後台 Google 試算表接收端網址
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkCdR5Vpf7Ivou2lveXYV-LgJu1K6gtFFR1z3NbjEuQUaYuNULCSIcZtSNuJAAun2Q/exec";
 
     const quizData = [
@@ -409,7 +410,7 @@
 
         resType.innerText = typeName;
 
-       // 背景自動傳送數據至 Google 試算表
+        // 背景自動傳送數據至 Google 試算表
         if (GOOGLE_SCRIPT_URL) {
             const formData = new FormData();
             formData.append("score", accumulatedScore);
@@ -420,12 +421,12 @@
                 method: "POST",
                 body: formData,
                 mode: "no-cors"
-            }).then(() => console.log("傳送成功！"))
+            }).then(() => console.log("數據成功寫入 Google 試算表！"))
               .catch(e => console.error("傳送失敗", e));
-        }
         }
     }
 
+    // 啟動題目渲染
     renderQuestion();
 </script>
 
