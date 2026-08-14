@@ -409,19 +409,20 @@
 
         resType.innerText = typeName;
 
-        // 背景自動傳送數據至 Google 試算表
+       // 背景自動傳送數據至 Google 試算表
         if (GOOGLE_SCRIPT_URL) {
+            const formData = new FormData();
+            formData.append("score", accumulatedScore);
+            formData.append("resultType", typeName);
+            formData.append("answers", selectedAnswers.join(" | "));
+
             fetch(GOOGLE_SCRIPT_URL, {
                 method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    score: accumulatedScore,
-                    resultType: typeName,
-                    answers: selectedAnswers.join(" | ")
-                })
-            }).then(() => console.log("數據成功寫入 Google 試算表！"))
+                body: formData,
+                mode: "no-cors"
+            }).then(() => console.log("傳送成功！"))
               .catch(e => console.error("傳送失敗", e));
+        }
         }
     }
 
