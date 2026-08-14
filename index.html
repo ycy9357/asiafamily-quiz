@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>你到底是不是亞洲父母!!??</title>
+    <title>生活處世哲學與人際價值觀深度評測 🌿</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -24,11 +24,8 @@
             width: 100%;
             padding: 36px 28px;
             position: relative;
-            transition: all 0.3s ease;
         }
-        .progress-wrapper {
-            margin-bottom: 24px;
-        }
+        .progress-wrapper { margin-bottom: 24px; }
         .progress-meta {
             display: flex;
             justify-content: space-between;
@@ -68,11 +65,7 @@
             margin-bottom: 24px;
             text-align: left;
         }
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
         .opt-btn {
             background-color: #ffffff;
             border: 2px solid #e1e7ec;
@@ -84,15 +77,12 @@
             cursor: pointer;
             text-align: left;
             transition: all 0.2s ease;
-            position: relative;
         }
         .opt-btn:hover {
             border-color: #486581;
             background-color: #f0f4f8;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
-        /* 結果區域 */
         .result-container { display: none; text-align: center; }
         .result-tag {
             display: inline-block;
@@ -104,17 +94,8 @@
             background-color: #d9e2ec;
             color: #243b53;
         }
-        .result-type {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #102a43;
-            margin-bottom: 8px;
-        }
-        .result-score {
-            font-size: 0.95rem;
-            color: #627d98;
-            margin-bottom: 24px;
-        }
+        .result-type { font-size: 1.6rem; font-weight: 800; color: #102a43; margin-bottom: 8px; }
+        .result-score { font-size: 0.95rem; color: #627d98; margin-bottom: 24px; }
         .result-analysis {
             background-color: #f8fafc;
             border-radius: 16px;
@@ -136,19 +117,16 @@
             border-radius: 12px;
             cursor: pointer;
             width: 100%;
-            transition: opacity 0.2s ease;
         }
-        .restart-btn:hover { opacity: 0.92; }
     </style>
 </head>
 <body>
 
 <div class="quiz-card">
-    <!-- 答題區域 -->
     <div id="quiz-panel">
         <div class="progress-wrapper">
             <div class="progress-meta">
-                <span id="q-category">維度載入中</span>
+                <span id="q-category">日常生活處世觀察</span>
                 <span id="q-index">1 / 18</span>
             </div>
             <div class="progress-bar"><div class="progress-fill" id="progress-bar"></div></div>
@@ -158,7 +136,6 @@
         <div class="options-list" id="opt-container"></div>
     </div>
 
-    <!-- 結果結算區域 -->
     <div id="result-panel" class="result-container">
         <div class="result-tag" id="res-tag">深度分析報告完成</div>
         <h2 class="result-type" id="res-type">人格類型結算中...</h2>
@@ -169,6 +146,9 @@
 </div>
 
 <script>
+    // 你的專屬後台 Google 試算表接收端網址
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkCdR5Vpf7Ivou2lveXYV-LgJu1K6gtFFR1z3NbjEuQUaYuNULCSIcZtSNuJAAun2Q/exec";
+
     const quizData = [
         {
             dimension: "生活決策與安全感（風險與掌控）",
@@ -354,10 +334,10 @@
 
     let currentIdx = 0;
     let accumulatedScore = 0;
+    let selectedAnswers = [];
 
     const quizPanel = document.getElementById("quiz-panel");
     const resultPanel = document.getElementById("result-panel");
-    const qCategory = document.getElementById("q-category");
     const qIndex = document.getElementById("q-index");
     const dimBadge = document.getElementById("dim-badge");
     const qTitle = document.getElementById("q-title");
@@ -366,7 +346,6 @@
 
     function renderQuestion() {
         const item = quizData[currentIdx];
-        qCategory.innerText = "日常生活處世觀察";
         qIndex.innerText = `${currentIdx + 1} / ${quizData.length}`;
         dimBadge.innerText = item.dimension;
         qTitle.innerText = item.title;
@@ -377,13 +356,14 @@
             const btn = document.createElement("button");
             btn.className = "opt-btn";
             btn.innerText = opt.text;
-            btn.onclick = () => selectOption(opt.score);
+            btn.onclick = () => selectOption(opt.score, opt.text);
             optContainer.appendChild(btn);
         });
     }
 
-    function selectOption(score) {
+    function selectOption(score, text) {
         accumulatedScore += score;
+        selectedAnswers.push(`Q${currentIdx + 1}: ${text.substring(0, 15)}...(${score}分)`);
         currentIdx++;
         if (currentIdx < quizData.length) {
             renderQuestion();
@@ -404,26 +384,44 @@
 
         resScore.innerText = `指標累計指數：${accumulatedScore} / 90`;
 
+        let typeName = "";
         if (accumulatedScore <= 32) {
             resTag.innerText = "特質型態：現代開明型 🌱";
-            resType.innerText = "【現代開明 · 靈魂摯友型】";
+            typeName = "【現代開明 · 靈魂摯友型】";
             resAnalysis.innerHTML = "你具備極佳的個人界線感與同理心！在你眼中，每個人都是獨立且完整的個體。你懂得傾聽、尊重不同的生活選擇，不會將自己的焦慮或經驗強加在他人身上。身邊的人與你相處時能感受到充分的自由與被信任感，是極具現代包容力的人生夥伴！";
         } else if (accumulatedScore <= 47) {
             resTag.innerText = "特質型態：行動溫情型 🍎";
-            resType.innerText = "【溫潤深情 · 行動守護型】";
+            typeName = "【溫潤深情 · 行動守護型】";
             resAnalysis.innerHTML = "你是一位典型的「行動派關懷者」！比起把愛與牽掛掛在嘴邊，你更習慣化為具體的日常照顧（準備餐點、留意溫飽、默默遞上一盤水果）。你不喜歡強勢介入別人的決定，但永遠在背後提供最踏實的後勤支持，是家庭與人際關係中最溫暖的避風港。";
         } else if (accumulatedScore <= 62) {
             resTag.innerText = "特質型態：務實防禦型 🐅";
-            resType.innerText = "【鋼鐵守護 · 務實穩健型】";
+            typeName = "【鋼鐵守護 · 務實穩健型】";
             resAnalysis.innerHTML = "「安全與穩定」是你處世的核心基石。你對未來的風險有著高度敏銳的預警機制，習慣用最務實的視角（穩定工作、儲蓄、抗風險能力）為身邊的人規劃防線。雖然出發點是深沉的保護欲，但有時務實的提醒容易給人嚴肅的印象，偶爾放手讓彼此享受當下也是一種浪漫喔！";
         } else if (accumulatedScore <= 77) {
             resTag.innerText = "特質型態：傳統宗師型 🔥";
-            resType.innerText = "【正宗典範 · 經典家長型】";
+            typeName = "【正宗典範 · 經典家長型】";
             resAnalysis.innerHTML = "傳統的家庭秩序、長幼尊卑與體面深度刻在你的處世哲學中。你深信長輩的經驗能引領年輕一代少走彎路，對「勤儉持家、孝親感恩、門當戶對」有著堅定不移的原則。你肩負著強烈的家族責任感，但在這個多元時代，適度給予晚輩試錯的空間，會讓關係更加融洽！";
         } else {
             resTag.innerText = "特質型態：高壓警報型 💥";
-            resType.innerText = "【極致掌控 · 亟需放鬆型】";
+            typeName = "【極致掌控 · 亟需放鬆型】";
             resAnalysis.innerHTML = "你的責任感與焦慮指數已達頂峰！你習慣全面介入與把控身邊人的各項人生維度（從穿著打扮、職涯到感情觀），並常因他人未遵從你的期待而感到失望或心累。這份極致的愛意容易轉化為沉重的無形壓力，建議試著卸下包袱、學會放手，先好好擁抱並放鬆自己！";
+        }
+
+        resType.innerText = typeName;
+
+        // 背景自動傳送數據至 Google 試算表
+        if (GOOGLE_SCRIPT_URL) {
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    score: accumulatedScore,
+                    resultType: typeName,
+                    answers: selectedAnswers.join(" | ")
+                })
+            }).then(() => console.log("數據成功寫入 Google 試算表！"))
+              .catch(e => console.error("傳送失敗", e));
         }
     }
 
