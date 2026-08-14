@@ -123,7 +123,6 @@
 <body>
 
 <div class="quiz-card">
-    <!-- 題目區域 -->
     <div id="quiz-panel">
         <div class="progress-wrapper">
             <div class="progress-meta">
@@ -137,7 +136,6 @@
         <div class="options-list" id="opt-container"></div>
     </div>
 
-    <!-- 結果區域 -->
     <div id="result-panel" class="result-container">
         <div class="result-tag" id="res-tag">深度分析報告完成</div>
         <h2 class="result-type" id="res-type">人格類型結算中...</h2>
@@ -337,97 +335,97 @@
     let accumulatedScore = 0;
     let selectedAnswers = [];
 
-    const quizPanel = document.getElementById("quiz-panel");
-    const resultPanel = document.getElementById("result-panel");
-    const qIndex = document.getElementById("q-index");
-    const dimBadge = document.getElementById("dim-badge");
-    const qTitle = document.getElementById("q-title");
-    const optContainer = document.getElementById("opt-container");
-    const progressBar = document.getElementById("progress-bar");
+    document.addEventListener("DOMContentLoaded", function() {
+        const quizPanel = document.getElementById("quiz-panel");
+        const resultPanel = document.getElementById("result-panel");
+        const qIndex = document.getElementById("q-index");
+        const dimBadge = document.getElementById("dim-badge");
+        const qTitle = document.getElementById("q-title");
+        const optContainer = document.getElementById("opt-container");
+        const progressBar = document.getElementById("progress-bar");
 
-    function renderQuestion() {
-        const item = quizData[currentIdx];
-        qIndex.innerText = `${currentIdx + 1} / ${quizData.length}`;
-        dimBadge.innerText = item.dimension;
-        qTitle.innerText = item.title;
-        progressBar.style.width = `${((currentIdx) / quizData.length) * 100}%`;
-        optContainer.innerHTML = "";
+        function renderQuestion() {
+            const item = quizData[currentIdx];
+            qIndex.innerText = `${currentIdx + 1} / ${quizData.length}`;
+            dimBadge.innerText = item.dimension;
+            qTitle.innerText = item.title;
+            progressBar.style.width = `${((currentIdx) / quizData.length) * 100}%`;
+            optContainer.innerHTML = "";
 
-        item.options.forEach(opt => {
-            const btn = document.createElement("button");
-            btn.className = "opt-btn";
-            btn.innerText = opt.text;
-            btn.onclick = () => selectOption(opt.score, opt.text);
-            optContainer.appendChild(btn);
-        });
-    }
-
-    function selectOption(score, text) {
-        accumulatedScore += score;
-        selectedAnswers.push(`Q${currentIdx + 1}: ${text.substring(0, 15)}...(${score}分)`);
-        currentIdx++;
-        if (currentIdx < quizData.length) {
-            renderQuestion();
-        } else {
-            renderResult();
-        }
-    }
-
-    function renderResult() {
-        progressBar.style.width = "100%";
-        quizPanel.style.display = "none";
-        resultPanel.style.display = "block";
-
-        const resTag = document.getElementById("res-tag");
-        const resType = document.getElementById("res-type");
-        const resScore = document.getElementById("res-score");
-        const resAnalysis = document.getElementById("res-analysis");
-
-        resScore.innerText = `指標累計指數：${accumulatedScore} / 90`;
-
-        let typeName = "";
-        if (accumulatedScore <= 32) {
-            resTag.innerText = "特質型態：現代開明型 🌱";
-            typeName = "【現代開明 · 靈魂摯友型】";
-            resAnalysis.innerHTML = "你具備極佳的個人界線感與同理心！在你眼中，每個人都是獨立且完整的個體。你懂得傾聽、尊重不同的生活選擇，不會將自己的焦慮或經驗強加在他人身上。身邊的人與你相處時能感受到充分的自由與被信任感，是極具現代包容力的人生夥伴！";
-        } else if (accumulatedScore <= 47) {
-            resTag.innerText = "特質型態：行動溫情型 🍎";
-            typeName = "【溫潤深情 · 行動守護型】";
-            resAnalysis.innerHTML = "你是一位典型的「行動派關懷者」！比起把愛與牽掛掛在嘴邊，你更習慣化為具體的日常照顧（準備餐點、留意溫飽、默默遞上一盤水果）。你不喜歡強勢介入別人的決定，但永遠在背後提供最踏實的後勤支持，是家庭與人際關係中最溫暖的避風港。";
-        } else if (accumulatedScore <= 62) {
-            resTag.innerText = "特質型態：務實防禦型 🐅";
-            typeName = "【鋼鐵守護 · 務實穩健型】";
-            resAnalysis.innerHTML = "「安全與穩定」是你處世的核心基石。你對未來的風險有著高度敏銳的預警機制，習慣用最務實的視角（穩定工作、儲蓄、抗風險能力）為身邊的人規劃防線。雖然出發點是深沉的保護欲，但有時務實的提醒容易給人嚴肅的印象，偶爾放手讓彼此享受當下也是一種浪漫喔！";
-        } else if (accumulatedScore <= 77) {
-            resTag.innerText = "特質型態：傳統宗師型 🔥";
-            typeName = "【正宗典範 · 經典家長型】";
-            resAnalysis.innerHTML = "傳統的家庭秩序、長幼尊卑與體面深度刻在你的處世哲學中。你深信長輩的經驗能引領年輕一代少走彎路，對「勤儉持家、孝親感恩、門當戶對」有著堅定不移的原則。你肩負著強烈的家族責任感，但在這個多元時代，適度給予晚輩試錯的空間，會讓關係更加融洽！";
-        } else {
-            resTag.innerText = "特質型態：高壓警報型 💥";
-            typeName = "【極致掌控 · 亟需放鬆型】";
-            resAnalysis.innerHTML = "你的責任感與焦慮指數已達頂峰！你習慣全面介入與把控身邊人的各項人生維度（從穿著打扮、職涯到感情觀），並常因他人未遵從你的期待而感到失望或心累。這份極致的愛意容易轉化為沉重的無形壓力，建議試著卸下包袱、學會放手，先好好擁抱並放鬆自己！";
+            item.options.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.className = "opt-btn";
+                btn.innerText = opt.text;
+                btn.onclick = () => selectOption(opt.score, opt.text);
+                optContainer.appendChild(btn);
+            });
         }
 
-        resType.innerText = typeName;
-
-        // 背景自動傳送數據至 Google 試算表
-        if (GOOGLE_SCRIPT_URL) {
-            const formData = new FormData();
-            formData.append("score", accumulatedScore);
-            formData.append("resultType", typeName);
-            formData.append("answers", selectedAnswers.join(" | "));
-
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: "POST",
-                body: formData,
-                mode: "no-cors"
-            }).then(() => console.log("數據成功寫入 Google 試算表！"))
-              .catch(e => console.error("傳送失敗", e));
+        function selectOption(score, text) {
+            accumulatedScore += score;
+            selectedAnswers.push(`Q${currentIdx + 1}: ${text.substring(0, 15)}...(${score}分)`);
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                renderQuestion();
+            } else {
+                renderResult();
+            }
         }
-    }
 
-    // 啟動題目渲染
-    renderQuestion();
+        function renderResult() {
+            progressBar.style.width = "100%";
+            quizPanel.style.display = "none";
+            resultPanel.style.display = "block";
+
+            const resTag = document.getElementById("res-tag");
+            const resType = document.getElementById("res-type");
+            const resScore = document.getElementById("res-score");
+            const resAnalysis = document.getElementById("res-analysis");
+
+            resScore.innerText = `指標累計指數：${accumulatedScore} / 90`;
+
+            let typeName = "";
+            if (accumulatedScore <= 32) {
+                resTag.innerText = "特質型態：現代開明型 🌱";
+                typeName = "【現代開明 · 靈魂摯友型】";
+                resAnalysis.innerHTML = "你具備極佳的個人界線感與同理心！在你眼中，每個人都是獨立且完整的個體。你懂得傾聽、尊重不同的生活選擇，不會將自己的焦慮或經驗強加在他人身上。身邊的人與你相處時能感受到充分的自由與被信任感，是極具現代包容力的人生夥伴！";
+            } else if (accumulatedScore <= 47) {
+                resTag.innerText = "特質型態：行動溫情型 🍎";
+                typeName = "【溫潤深情 · 行動守護型】";
+                resAnalysis.innerHTML = "你是一位典型的「行動派關懷者」！比起把愛與牽掛掛在嘴邊，你更習慣化為具體的日常照顧（準備餐點、留意溫飽、默默遞上一盤水果）。你不喜歡強勢介入別人的決定，但永遠在背後提供最踏實的後勤支持，是家庭與人際關係中最溫暖的避風港。";
+            } else if (accumulatedScore <= 62) {
+                resTag.innerText = "特質型態：務實防禦型 🐅";
+                typeName = "【鋼鐵守護 · 務實穩健型】";
+                resAnalysis.innerHTML = "「安全與穩定」是你處世的核心基石。你對未來的風險有著高度敏銳的預警機制，習慣用最務實的視角（穩定工作、儲蓄、抗風險能力）為身邊的人規劃防線。雖然出發點是深沉的保護欲，但有時務實的提醒容易給人嚴肅的印象，偶爾放手讓彼此享受當下也是一種浪漫喔！";
+            } else if (accumulatedScore <= 77) {
+                resTag.innerText = "特質型態：傳統宗師型 🔥";
+                typeName = "【正宗典範 · 經典家長型】";
+                resAnalysis.innerHTML = "傳統的家庭秩序、長幼尊卑與體面深度刻在你的處世哲學中。你深信長輩的經驗能引領年輕一代少走彎路，對「勤儉持家、孝親感恩、門當戶對」有著堅定不移的原則。你肩負著強烈的家族責任感，但在這個多元時代，適度給予晚輩試錯的空間，會讓關係更加融洽！";
+            } else {
+                resTag.innerText = "特質型態：高壓警報型 💥";
+                typeName = "【極致掌控 · 亟需放鬆型】";
+                resAnalysis.innerHTML = "你的責任感與焦慮指數已達頂峰！你習慣全面介入與把控身邊人的各項人生維度（從穿著打扮、職涯到感情觀），並常因他人未遵從你的期待而感到失望或心累。這份極致的愛意容易轉化為沉重的無形壓力，建議試著卸下包袱、學會放手，先好好擁抱並放鬆自己！";
+            }
+
+            resType.innerText = typeName;
+
+            if (GOOGLE_SCRIPT_URL) {
+                const formData = new FormData();
+                formData.append("score", accumulatedScore);
+                formData.append("resultType", typeName);
+                formData.append("answers", selectedAnswers.join(" | "));
+
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    body: formData,
+                    mode: "no-cors"
+                }).then(() => console.log("數據成功寫入 Google 試算表！"))
+                  .catch(e => console.error("傳送失敗", e));
+            }
+        }
+
+        renderQuestion();
+    });
 </script>
 
 </body>
